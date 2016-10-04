@@ -132,14 +132,20 @@ bool bluetooth_setup(void) {
 
 bool bluetooth_shutdown(void) {
     
-    PORTAbits.RA0 = 0; // MLDP mode
+    PORTAbits.RA0 = 0; // CMD mode
+    
+    if (!wait_response("CMD")) {
+        return false;
+    }
     
     char messageBox[CHARACTERS] = {0};
     
     sprintf(messageBox, "K\r\n");
     uart1_sendData(messageBox);
     
-    while (uart1_recieveData(messageBox) == false) Nop();
+    if (!wait_response("Connection End")) {
+        return false;
+    }
     
     delay();
     
@@ -197,7 +203,7 @@ bool response_cmp(char *response, char *expected) {
 void delay() {
     long x = 0;
     long y = 0;
-    for (x = 0; x < 100000; x++) {
+    for (x = 0; x < 100; x++) {
        for (y = 0; y < 50; y++) {
            Nop();
        } 
