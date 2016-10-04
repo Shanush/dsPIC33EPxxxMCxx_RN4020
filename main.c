@@ -56,41 +56,16 @@ int16_t main(void)
     
     Nop();
     
-    /* TODO <INSERT USER APPLICATION CODE HERE> */
-    //volatile unsigned long x = 0;
     PORTBbits.RB14 = 1;
-    
-    //long i = 0;
-    //long x = 0;
-    
+ 
     bool endLoop = false;
     char messageBox[CHARACTERS] = {0};
     
     
     while(!endLoop)
     {
-//        bool isDataAvailable = false;
-//        
-//        char newString[30] = {0};
-//        isDataAvailable = uart1_recieveData(newString);
-//        
-//        if (isDataAvailable == true) {
-//            if (newString[0] == 'A' && newString[1] == 'O' && newString[2] == 'K' ) {
-//                strcpy(newString, "Yo OK\r\n");
-//            }
-//            uart1_sendData(newString);
-//        }
         
-//        while (x < 53846) {
-//            x = x + 1;
-//            for (i = 0; i < 50; i++) {
-//                Nop();
-//            }
-//        }
-//        PORTBbits.RB14 = ~PORTBbits.RB14;
-//        x = 0;
-        
-        get_response(messageBox);
+        next_message(messageBox);
         if (messageBox[0] == 'D') {
             endLoop = true;
         }
@@ -98,6 +73,15 @@ int16_t main(void)
     }
     
     bluetooth_shutdown();
+    
+    /* Wait a few seconds before fully shutting down */
+    long x = 0;
+    long y = 0;
+    for (x = 0; x < 100000; x++) {
+        for (y = 0; y < 50; y++) {
+            Nop();
+        }
+    }
     
     return 0;
 }
