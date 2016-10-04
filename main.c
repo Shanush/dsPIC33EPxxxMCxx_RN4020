@@ -66,10 +66,26 @@ int16_t main(void)
     {
         
         next_message(messageBox);
-        if (messageBox[0] == 'D') {
-            endLoop = true;
-        }
         
+        switch (messageBox[0]) {
+            case 'D':
+                endLoop = true;
+                break;
+            case 'M':
+                if (messageBox[1] == 'R') {
+                    PORTBbits.RB14 = ~PORTBbits.RB14;
+                } else if (messageBox[1] == 'L') {
+                    PORTBbits.RB12 = ~PORTBbits.RB12;
+                } else if (messageBox[1] == 'X') {
+                    PORTBbits.RB14 = 0;
+                    Nop();
+                    PORTBbits.RB12 = 0;
+                    Nop();
+                }
+                break;
+            default:
+                break;
+        }
     }
     
     bluetooth_shutdown();
